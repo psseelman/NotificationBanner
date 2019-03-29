@@ -66,6 +66,19 @@ public class BaseNotificationBanner: UIView {
         }
     }
     
+    /// The height of the banner when it is presented
+    public var bannerWidth: CGFloat {
+        get {
+            if let customBannerWidth = customBannerWidth {
+                return customBannerWidth
+            } else {
+                return appWindow.frame.width
+            }
+        } set {
+            customBannerWidth = newValue
+        }
+    }
+    
     /// The topmost label of the notification if a custom view is not desired
     public internal(set) var titleLabel: UILabel?
     
@@ -127,6 +140,9 @@ public class BaseNotificationBanner: UIView {
     
     /// If this is not nil, then this height will be used instead of the auto calculated height
     internal var customBannerHeight: CGFloat?
+    
+    /// If this is not nil, then this width will be used instead of the auto calculated width
+    internal var customBannerWidth: CGFloat?
     
     /// Used by the banner queue to determine wether a notification banner was placed in front of it in the queue
     var isSuspended: Bool = false
@@ -327,7 +343,7 @@ public class BaseNotificationBanner: UIView {
             self.bannerPosition = bannerPosition
             createBannerConstraints(for: bannerPosition)
             bannerPositionFrame = BannerPositionFrame(bannerPosition: bannerPosition,
-                                                      bannerWidth: appWindow.frame.width,
+                                                      bannerWidth: bannerWidth,
                                                       bannerHeight: bannerHeight,
                                                       maxY: maximumYPosition(),
                                                       edgeInsets: bannerEdgeInsets)
@@ -445,7 +461,7 @@ public class BaseNotificationBanner: UIView {
                        height: bannerHeight)
     
         bannerPositionFrame = BannerPositionFrame(bannerPosition: bannerPosition,
-                                                  bannerWidth: appWindow.frame.width,
+                                                  bannerWidth: bannerWidth,
                                                   bannerHeight: bannerHeight,
                                                   maxY: maximumYPosition(),
                                                   edgeInsets: bannerEdgeInsets)
@@ -489,7 +505,7 @@ public class BaseNotificationBanner: UIView {
         return true
     }
     
-    /** 
+    /**
         Calculates the maximum `y` position that a notification banner can slide in from
     */
  
