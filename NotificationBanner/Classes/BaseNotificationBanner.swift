@@ -469,19 +469,17 @@ open class BaseNotificationBanner: UIView {
     @objc private dynamic func onOrientationChanged() {
         updateSpacerViewHeight()
         
-        let edgeInsets = bannerEdgeInsets ?? .zero
-
-        let newY = (bannerPosition == .top) ? (frame.origin.y) : (appWindow.frame.height - bannerHeight + edgeInsets.top - edgeInsets.bottom)
+        let currentBounds = UIScreen.main.bounds
+        let newY = (bannerPosition == .top) ? (frame.origin.y) : (appWindow.frame.height - bannerHeight)
         frame = CGRect(x: frame.origin.x,
                        y: newY,
-                       width: appWindow.frame.width - edgeInsets.left - edgeInsets.right,
+                       width: currentBounds.width,
                        height: bannerHeight)
-    
+        
         bannerPositionFrame = BannerPositionFrame(bannerPosition: bannerPosition,
-                                                  bannerWidth: bannerWidth,
+                                                  bannerWidth: currentBounds.width,
                                                   bannerHeight: bannerHeight,
-                                                  maxY: maximumYPosition(),
-                                                  edgeInsets: bannerEdgeInsets)
+                                                  maxY: maximumYPosition())
     }
     
     /**
