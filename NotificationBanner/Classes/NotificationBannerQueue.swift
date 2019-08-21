@@ -54,6 +54,7 @@ open class NotificationBannerQueue: NSObject {
             }
             
         } else {
+            while banners.first?.isDismissing ?? false { }
             banner.show(placeOnQueue: false, bannerPosition: banner.bannerPosition)
             
             if let firstBanner = banners.first {

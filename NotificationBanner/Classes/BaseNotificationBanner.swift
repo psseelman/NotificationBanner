@@ -121,6 +121,9 @@ open class BaseNotificationBanner: UIView {
     /// Wether or not the notification banner is currently being displayed
     public private(set) var isDisplaying: Bool = false
 
+    /// Whether or not the notification banner is currently being dismissed
+    public private(set) var isDismissing: Bool = false
+    
     /// The view that the notification layout is presented on. The constraints/frame of this should not be changed
     internal var contentView: UIView!
     
@@ -270,6 +273,8 @@ open class BaseNotificationBanner: UIView {
             return
         }
         
+        self.isDismissing = true
+        
         NSObject.cancelPreviousPerformRequests(withTarget: self,
                                                selector: #selector(dismiss),
                                                object: nil)
@@ -281,6 +286,7 @@ open class BaseNotificationBanner: UIView {
             self.frame = self.bannerPositionFrame.startFrame
         }) { (completed) in
             self.removeFromSuperview()
+            self.isDismissing = false
             self.isDisplaying = false
             
             NotificationCenter.default.post(name: BaseNotificationBanner.BannerDidDisappear, object: self, userInfo: self.notificationUserInfo)
